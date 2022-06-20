@@ -34,16 +34,16 @@ export const getPlacesData = async (type, sw, ne) => {
 
 // Get Weather Data
 export const getWeatherData = async (lat, lng) => {
-  // params & headers
-  const options = {
-    params: { lon: lng, lat: lat },
-    headers: {
-      "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY, // Your Rapid API Key
-      "X-RapidAPI-Host": "community-open-weather-map.p.rapidapi.com",
-    },
-  };
-
   try {
+    // params & headers
+    const options = {
+      params: { lon: lng, lat: lat },
+      headers: {
+        "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY, // Your Rapid API Key
+        "X-RapidAPI-Host": "community-open-weather-map.p.rapidapi.com",
+      },
+    };
+
     // fetch weather for a place
     const { data } = await axios.get(
       "https://community-open-weather-map.p.rapidapi.com/climate/month",

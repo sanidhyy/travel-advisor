@@ -24,7 +24,7 @@ const PlaceDetails = ({ place, selected, refProp }) => {
 
   const classes = useStyles();
   return (
-    <Card elevation={6} key={place?.name}>
+    <Card elevation={6}>
       {/* Place Image */}
       <CardMedia
         style={{ height: 350 }}
