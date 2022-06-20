@@ -8,10 +8,12 @@ import {
   FormControl,
   Select,
 } from "@material-ui/core";
-
-import useStyles from "./styles";
 import PlaceDetails from "../PlaceDetails/PlaceDetails";
 
+// Styles
+import useStyles from "./styles";
+
+// List
 const List = ({
   places,
   childClicked,
@@ -24,6 +26,7 @@ const List = ({
   const classes = useStyles();
   const [elRefs, setElRefs] = useState([]);
 
+  // Get refs for all places
   useEffect(() => {
     const refs = Array(places?.length)
       .fill()
@@ -39,11 +42,13 @@ const List = ({
         Restaurants, Hotels & Attractions around you
       </Typography>
       {isLoading ? (
+        // Loader
         <div className={classes.loading}>
           <CircularProgress size="5rem" />
         </div>
       ) : (
         <>
+          {/* Select Place Type */}
           <FormControl className={classes.formControl}>
             <InputLabel>Type</InputLabel>
             <Select value={type} onChange={(e) => setType(e.target.value)}>
@@ -53,6 +58,7 @@ const List = ({
             </Select>
           </FormControl>
 
+          {/* Select Ratings */}
           <FormControl className={classes.formControl}>
             <InputLabel>Rating</InputLabel>
             <Select value={rating} onChange={(e) => setRating(e.target.value)}>
@@ -63,6 +69,7 @@ const List = ({
             </Select>
           </FormControl>
 
+          {/* Place Details */}
           <Grid container spacing={3} className={classes.list}>
             {places?.map((place, i) => (
               <Grid ref={elRefs[i]} item key={i} xs={12}>

@@ -1,7 +1,9 @@
 import axios from "axios";
 
+// Get Places Data
 export const getPlacesData = async (type, sw, ne) => {
   try {
+    // params & headers
     const options = {
       params: {
         bl_latitude: sw.lat,
@@ -10,10 +12,12 @@ export const getPlacesData = async (type, sw, ne) => {
         tr_longitude: ne.lng,
       },
       headers: {
-        "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
+        "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY, // Your Rapid API Key
         "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
       },
     };
+
+    // fetch places list
     const {
       data: { data },
     } = await axios.get(
@@ -23,19 +27,24 @@ export const getPlacesData = async (type, sw, ne) => {
 
     return data;
   } catch (err) {
+    // Error in fetching data
     console.log(err);
   }
 };
 
+// Get Weather Data
 export const getWeatherData = async (lat, lng) => {
+  // params & headers
   const options = {
     params: { lon: lng, lat: lat },
     headers: {
-      "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
+      "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY, // Your Rapid API Key
       "X-RapidAPI-Host": "community-open-weather-map.p.rapidapi.com",
     },
   };
+
   try {
+    // fetch weather for a place
     const { data } = await axios.get(
       "https://community-open-weather-map.p.rapidapi.com/climate/month",
       options
@@ -43,6 +52,7 @@ export const getWeatherData = async (lat, lng) => {
 
     return data;
   } catch (err) {
+    // Error in fetching data
     console.log(err);
   }
 };
