@@ -1,6 +1,7 @@
 # Travel Advisor - React JS Travel Companion App
 
-![Travel Companion App with React JS](https://user-images.githubusercontent.com/71302066/174557342-106b339c-88e5-4e48-abb4-c07ddea63c9f.png)
+![Travel Companion App with React JS](https://user-images.githubusercontent.com/71302066/174569416-9e8250a9-87ef-49f4-be4a-f077196fe12f.png)
+
 
 [![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://github.com/Technical-Shubham-tech)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Technical-Shubham-tech/travel-advisor/commits/main)
