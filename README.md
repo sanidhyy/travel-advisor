@@ -1,70 +1,77 @@
-# Getting Started with Create React App
+# Travel Advisor - React JS Travel Companion App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Travel Companion App with React JS](https://user-images.githubusercontent.com/71302066/174557342-106b339c-88e5-4e48-abb4-c07ddea63c9f.png)
 
-## Available Scripts
+[![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://github.com/Technical-Shubham-tech)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Technical-Shubham-tech/travel-advisor/commits/main)
+[![GitHub license](https://img.shields.io/github/license/Technical-Shubham-tech/travel-advisor)](https://github.com/Technical-Shubham-tech/travel-advisor/blob/main/LICENSE.md)
+[![GitHub branches](https://badgen.net/github/branches/Technical-Shubham-tech/travel-advisor/)](https://github.com/Technical-Shubham-tech/travel-advisor/branches)
+[![Github commits](https://badgen.net/github/commits/Technical-Shubham-tech/travel-advisor/main)](https://github.com/Technical-Shubham-tech/travel-advisor/commits)
+[![Website](https://api.netlify.com/api/v1/badges/29710a1c-50d3-471a-a525-b37e473da25d/deploy-status)](https://travel-advisor-reactjs.netlify.app/)
+[![GitHub issues](https://img.shields.io/github/issues/Technical-Shubham-tech/travel-advisor)](https://github.com/Technical-Shubham-tech/travel-advisor/issues)
 
-In the project directory, you can run:
+## ⚠️ Before you start
 
-### `yarn start`
+1. Make sure **Git** and **NodeJS** is installed
+2. **Yarn** is faster than Npm. So use [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/).
+3. Create .env.local file in root folder.
+4. Contents of **.env.local**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+REACT_APP_GOOGLE_MAP_API_KEY="XXXXXXXXXXXXXXXXXX"
+REACT_APP_RAPID_API_KEY="XXXXXXXXXXXXXXXXXXXXX"
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+5. Go, to [Google Cloud Developers Console](https://console.cloud.google.com/projectcreate) and create a project.
 
-### `yarn test`
+![create a project](https://user-images.githubusercontent.com/71302066/174559275-458bbcec-6997-41f0-b359-1139e00fc759.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+6. Once you created the project, make sure to select it from Header section.
 
-### `yarn build`
+![select your project](https://user-images.githubusercontent.com/71302066/174560599-92b3395c-9f43-4b42-a618-4151776b192d.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+7. From Sidebar, Go to APIs & Services > Credentials > Create Credentials > **API Key**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![create api key](https://user-images.githubusercontent.com/71302066/174561372-6907aaf6-c538-46df-bd9e-6dfa08b9dd35.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+8. Now click on **SHOW KEY** to get your `REACT_APP_GOOGLE_MAP_API_KEY`.
 
-### `yarn eject`
+9. Now, to setup Travel Advisor and Weather API, go to [Rapid API Website](https://rapidapi.com/) and create an account.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+10. Enable these two APIs for travel and weather data: [API 1: Travel Advisor](https://rapidapi.com/apidojo/api/travel-advisor/) and [API 2: Open Weather Map](https://rapidapi.com/community/api/open-weather-map/).
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![Copy API Key](https://user-images.githubusercontent.com/71302066/174563987-a29b9be5-390b-4dbd-9d3f-f7a19e42172b.png)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+11. After enabling you can get your API Keys and paste them in `.env.local` file in `REACT_APP_RAPID_API_KEY`.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+**NOTE:** Make sure you don't share these keys publicaly.
 
-## Learn More
+## 📌 How to use this App?
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Clone this **repository** to your local computer.
+2. Open **terminal** in root directory.
+3. Type and Run `yarn install`.
+4. Once packages are installed, type and run `yarn start`
+5. Now app is fully configured and you can start using this app :+1:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 📃 Built with
 
-### Code Splitting
+[<img src="https://media3.giphy.com/media/ln7z2eWriiQAllfVcn/200w.webp" width="100">](https://www.javascript.com/)
+[<img src="https://i.giphy.com/media/eNAsjO55tPbgaor7ma/200w.webp" width="100">](https://reactjs.org/)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+[<img src="https://img.shields.io/badge/Google%20Maps-4285F4?logo=googlemaps&logoColor=fff&style=flat" width="100" height="26">](https://developers.google.com/maps)
+[<img src="https://user-images.githubusercontent.com/71302066/174567516-824b1967-5954-4ac7-9446-14a3b2ab825d.svg" alt="Rapid API" width="100">](https://rapidapi.com/)
 
-### Analyzing the Bundle Size
+## 🔧 Stats
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+![Stats for this App](https://user-images.githubusercontent.com/71302066/174568045-5964dfac-6e6f-4c90-b161-c9181ef6623d.svg)
 
-### Making a Progressive Web App
+## 🙌🏼 Contribute
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+You might encounter some bugs while using this app. You are more than welcome to contribute. Just submit changes via pull request and I will review them before merging. Make sure you follow community guidelines.
 
-### Advanced Configuration
+## 🚀 Follow Me
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[![GitHub followers](https://img.shields.io/github/followers/Technical-Shubham-tech?style=social&label=Follow&maxAge=2592000)](https://github.com/Technical-Shubham-tech)
+[![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2FTechnicalShubam)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2FTechnical-Shubham-tech%2Fmedical-chat-app)
+[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/channel/UCNAz_hUVBG2ZUN8TVm0bmYw)
