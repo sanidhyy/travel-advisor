@@ -5,7 +5,6 @@
 
 [![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://github.com/Technical-Shubham-tech)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Technical-Shubham-tech/travel-advisor/commits/main)
-[![GitHub license](https://img.shields.io/github/license/Technical-Shubham-tech/travel-advisor)](https://github.com/Technical-Shubham-tech/travel-advisor/blob/main/LICENSE.md)
 [![GitHub branches](https://badgen.net/github/branches/Technical-Shubham-tech/travel-advisor/)](https://github.com/Technical-Shubham-tech/travel-advisor/branches)
 [![Github commits](https://badgen.net/github/commits/Technical-Shubham-tech/travel-advisor/main)](https://github.com/Technical-Shubham-tech/travel-advisor/commits)
 [![Website](https://api.netlify.com/api/v1/badges/29710a1c-50d3-471a-a525-b37e473da25d/deploy-status)](https://travel-advisor-reactjs.netlify.app/)
