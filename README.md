@@ -62,6 +62,7 @@ REACT_APP_RAPID_API_KEY="XXXXXXXXXXXXXXXXXXXXX"
 
 [<img src="https://img.shields.io/badge/Google%20Maps-4285F4?logo=googlemaps&logoColor=fff&style=flat" width="100" height="26">](https://developers.google.com/maps)
 [<img src="https://user-images.githubusercontent.com/71302066/174567516-824b1967-5954-4ac7-9446-14a3b2ab825d.svg" alt="Rapid API" width="100">](https://rapidapi.com/)
+[<img src="http://ForTheBadge.com/images/badges/built-with-love.svg" alt="Built with Love">](https://github.com/Technical-Shubham-tech)
 
 ## 🔧 Stats
 
