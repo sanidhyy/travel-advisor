@@ -11,8 +11,19 @@ export const parseFiniteNumber = (value: string | null): number | undefined => {
   return Number.isFinite(parsed) ? parsed : undefined;
 };
 
+const loadLocalEnvFile = (fileName: string): void => {
+  try {
+    process.loadEnvFile(fileName);
+  } catch {
+    // File may not exist locally or in production.
+  }
+};
+
+loadLocalEnvFile(".env.local");
+loadLocalEnvFile(".env");
+
 export const getRapidApiKey = (): string | undefined => {
-  const key = process.env.RAPID_API_KEY;
+  const key = process.env.RAPID_API_KEY ?? process.env.REACT_APP_RAPID_API_KEY;
   return key ? key : undefined;
 };
 

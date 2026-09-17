@@ -1,4 +1,4 @@
-# Travel Advisor - React JS Travel Companion App
+# Travel Advisor - React, TypeScript, and Vite Travel Companion App
 
 ![Travel Companion App with React JS](https://user-images.githubusercontent.com/71302066/174569416-9e8250a9-87ef-49f4-be4a-f077196fe12f.png)
 
@@ -12,12 +12,12 @@
 
 ## ⚠️ Before you start
 
-1. Make sure **Git** and **NodeJS** is installed
-2. Create .env.local file in root folder.
+1. Make sure **Git** and **Node.js 20.19+** are installed.
+2. Create a `.env.local` file in the root folder.
 3. Contents of **.env.local**
 
 ```
-REACT_APP_RAPID_API_KEY="XXXXXXXXXXXXXXXXXXXXX"
+RAPID_API_KEY="XXXXXXXXXXXXXXXXXXXXX"
 ```
 
 4. To setup Travel Advisor and Weather API, go to [Rapid API Website](https://rapidapi.com/) and create an account.
@@ -26,7 +26,11 @@ REACT_APP_RAPID_API_KEY="XXXXXXXXXXXXXXXXXXXXX"
 
 ![Copy API Key](https://user-images.githubusercontent.com/71302066/174563987-a29b9be5-390b-4dbd-9d3f-f7a19e42172b.png)
 
-6. After enabling you can get your API Key and paste it in `.env.local` as `REACT_APP_RAPID_API_KEY`.
+6. After enabling, paste your API key in `.env.local` as `RAPID_API_KEY`.
+
+This key is used only by **Netlify Functions** (`/api/places` and `/api/weather`). Do not prefix it with `VITE_` — that would expose it in the browser bundle.
+
+On Netlify, set `RAPID_API_KEY` in the site environment variables (Functions scope) and remove any old `REACT_APP_RAPID_API_KEY` value.
 
 **NOTE:** Make sure you don't share these keys publicaly.
 
@@ -34,9 +38,15 @@ REACT_APP_RAPID_API_KEY="XXXXXXXXXXXXXXXXXXXXX"
 
 1. Clone this **repository** to your local computer.
 2. Open **terminal** in root directory.
-3. Type and Run `npm install` or `pnpm install`.
-4. Once packages are installed, type and run `npm start` or `pnpm start`
+3. Type and Run `pnpm install` (or `npm install`).
+4. Once packages are installed, type and run `pnpm dev` or `pnpm start`.
 5. Now app is fully configured and you can start using this app :+1:
+
+Useful scripts:
+
+- `pnpm dev` — Vite dev server (functions are emulated locally)
+- `pnpm lint` — ESLint
+- `pnpm build` — type-check and production build
 
 ### Need Help?
 
@@ -48,9 +58,10 @@ If you run into issues during installation or setup:
 
 ## 📃 Built with
 
-[<img src="https://media3.giphy.com/media/ln7z2eWriiQAllfVcn/200w.webp" width="100">](https://www.javascript.com/)
+[<img src="https://media3.giphy.com/media/ln7z2eWriiQAllfVcn/200w.webp" width="100">](https://www.typescriptlang.org/)
 [<img src="https://i.giphy.com/media/eNAsjO55tPbgaor7ma/200w.webp" width="100">](https://reactjs.org/)
 
+[<img src="https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=fff&style=flat" width="100" height="26">](https://vite.dev/)
 [<img src="https://img.shields.io/badge/Leaflet-199900?logo=leaflet&logoColor=fff&style=flat" width="100" height="26">](https://leafletjs.com/)
 [<img src="https://user-images.githubusercontent.com/71302066/174567516-824b1967-5954-4ac7-9446-14a3b2ab825d.svg" alt="Rapid API" width="100">](https://rapidapi.com/)
 [<img src="http://ForTheBadge.com/images/badges/built-with-love.svg" alt="Built with Love">](https://github.com/sanidhyy)

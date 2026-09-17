@@ -10,6 +10,9 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -17,7 +20,7 @@
     "@mui/material": "^9.4.0",
     "@netlify/functions": "^6.0.0",
     "@netlify/vite-plugin": "^3.0.1",
-    "axios": "^0.27.2",
+    "axios": "^1.20.0",
     "leaflet": "^1.9.4",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
