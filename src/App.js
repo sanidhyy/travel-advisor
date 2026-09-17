@@ -72,7 +72,7 @@ const App = () => {
           />
         </Grid>
 
-        {/* Google Maps */}
+        {/* Map */}
         <Grid item xs={12} md={8}>
           <Map
             setCoordinates={setCoordinates}

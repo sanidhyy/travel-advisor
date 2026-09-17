@@ -1,12 +1,82 @@
-import React from "react";
-import GoogleMapReact from "google-map-react";
+import React, { useEffect, useRef, useState } from "react";
+import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
 import { Paper, Typography, useMediaQuery } from "@material-ui/core";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import Rating from "@material-ui/lab/Rating";
 
-// Styles
 import useStyles from "./styles";
-import mapStyles from "./mapStyles";
+import "leaflet/dist/leaflet.css";
+
+const reportView = (map, setCoordinates, setBounds) => {
+  const center = map.getCenter();
+  const bounds = map.getBounds();
+  const ne = bounds.getNorthEast();
+  const sw = bounds.getSouthWest();
+
+  setCoordinates({ lat: center.lat, lng: center.lng });
+  setBounds({
+    ne: { lat: ne.lat, lng: ne.lng },
+    sw: { lat: sw.lat, lng: sw.lng },
+  });
+};
+
+const MapEvents = ({ setCoordinates, setBounds }) => {
+  const map = useMapEvents({
+    moveend: () => reportView(map, setCoordinates, setBounds),
+  });
+
+  useEffect(() => {
+    map.invalidateSize();
+    const center = map.getCenter();
+    if (center.lat === 0 && center.lng === 0) return;
+    reportView(map, setCoordinates, setBounds);
+  }, [map, setCoordinates, setBounds]);
+
+  return null;
+};
+
+const Recenter = ({ coordinates }) => {
+  const map = useMap();
+  const didCenter = useRef(false);
+
+  useEffect(() => {
+    if (
+      !didCenter.current &&
+      (coordinates.lat !== 0 || coordinates.lng !== 0)
+    ) {
+      map.setView([coordinates.lat, coordinates.lng], 14, { animate: false });
+      didCenter.current = true;
+    }
+  }, [coordinates, map]);
+
+  return null;
+};
+
+const OverlayMarker = ({ lat, lng, className, onClick, children }) => {
+  const map = useMap();
+  const [pos, setPos] = useState(() =>
+    map.latLngToContainerPoint([lat, lng])
+  );
+
+  useEffect(() => {
+    const update = () => setPos(map.latLngToContainerPoint([lat, lng]));
+    map.on("move zoom viewreset", update);
+    update();
+    return () => {
+      map.off("move zoom viewreset", update);
+    };
+  }, [map, lat, lng]);
+
+  return (
+    <div
+      className={className}
+      style={{ left: pos.x, top: pos.y }}
+      onClick={onClick}
+    >
+      {children}
+    </div>
+  );
+};
 
 const Map = ({
   setCoordinates,
@@ -17,83 +87,83 @@ const Map = ({
   weatherData,
 }) => {
   const classes = useStyles();
-
-  // Check device viewport
   const isDesktop = useMediaQuery("(min-width: 600px)");
 
   return (
     <div className={classes.mapContainer}>
-      {/* Google Map */}
-      <GoogleMapReact
-        bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY }}
-        defaultCenter={{ lat: 0, lng: 0 }}
-        center={coordinates}
-        defaultZoom={14}
-        margin={[50, 50, 50, 50]}
-        options={{
-          disableDefaultUI: true,
-          zoomControl: true,
-          styles: mapStyles,
-        }}
-        onChange={(e) => {
-          setCoordinates({ lat: e.center.lat, lng: e.center.lng });
-          setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw });
-        }}
-        onChildClick={(child) => setChildClicked(child)}
+      <MapContainer
+        center={[coordinates.lat || 0, coordinates.lng || 0]}
+        zoom={14}
+        zoomControl
+        style={{ height: "100%", width: "100%" }}
       >
-        {/* Render each place on map */}
-        {places?.map((place, i) => (
-          <div
-            className={classes.markerContainer}
-            lat={Number(place.latitude)}
-            lng={Number(place.longitude)}
-            key={i}
-          >
-            {!isDesktop ? (
-              <LocationOnOutlinedIcon color="primary" fontSize="large" />
-            ) : (
-              <Paper elevation={3} className={classes.paper}>
-                {/* Place Name */}
-                <Typography
-                  className={classes.typography}
-                  variant="subtitle2"
-                  gutterBottom
-                >
-                  {place.name}
-                </Typography>
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <Recenter coordinates={coordinates} />
+        <MapEvents setCoordinates={setCoordinates} setBounds={setBounds} />
 
-                {/* Place Image */}
-                <img
-                  src={
-                    place.photo
-                      ? place.photo.images.large.url
-                      : "https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg"
-                  }
-                  alt={place.name}
-                  className={classes.pointer}
-                />
+        <div className={classes.overlayPane}>
+          {places?.map((place, i) => {
+            const lat = Number(place.latitude);
+            const lng = Number(place.longitude);
+            if (Number.isNaN(lat) || Number.isNaN(lng)) return null;
 
-                {/* Place Rating */}
-                <Rating size="small" value={Number(place.rating)} readOnly />
-              </Paper>
-            )}
-          </div>
-        ))}
+            return (
+              <OverlayMarker
+                key={i}
+                lat={lat}
+                lng={lng}
+                className={classes.markerContainer}
+                onClick={() => setChildClicked(i)}
+              >
+                {!isDesktop ? (
+                  <LocationOnOutlinedIcon color="primary" fontSize="large" />
+                ) : (
+                  <Paper elevation={3} className={classes.paper}>
+                    <Typography
+                      className={classes.typography}
+                      variant="subtitle2"
+                      gutterBottom
+                    >
+                      {place.name}
+                    </Typography>
+                    <img
+                      src={
+                        place.photo
+                          ? place.photo.images.large.url
+                          : "https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg"
+                      }
+                      alt={place.name}
+                      className={classes.pointer}
+                    />
+                    <Rating
+                      size="small"
+                      value={Number(place.rating)}
+                      readOnly
+                    />
+                  </Paper>
+                )}
+              </OverlayMarker>
+            );
+          })}
 
-        {/* Render Weather Data */}
-        {weatherData?.location && weatherData?.current?.condition?.icon && (
-          <div
-            lat={weatherData.location.lat}
-            lng={weatherData.location.lon}
-          >
-            <img
-              height={100}
-              src={`https:${weatherData.current.condition.icon}`}
-              alt={weatherData.current.condition.text}
-            />
-          </div>
-        )}
-      </GoogleMapReact>
+          {weatherData?.location && weatherData?.current?.condition?.icon && (
+            <OverlayMarker
+              lat={weatherData.location.lat}
+              lng={weatherData.location.lon}
+              className={classes.markerContainer}
+            >
+              <img
+                height={100}
+                src={`https:${weatherData.current.condition.icon}`}
+                alt={weatherData.current.condition.text}
+              />
+            </OverlayMarker>
+          )}
+        </div>
+      </MapContainer>
     </div>
   );
 };
