@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import Header from "./components/Header/Header";
 import List from "./components/List/List";
 import Map from "./components/Map/Map";
-import { getPlacesData, getWeatherData } from "./api";
+import { getPlacesData, getWeatherData, getApproximateLocation } from "./api";
 import type {
   Coordinates,
   MapBounds,
@@ -18,13 +18,10 @@ const App = () => {
   const [weatherData, setWeatherData] = useState<WeatherData | undefined>();
   const [childClicked, setChildClicked] = useState<number | null>(null);
 
-  const [coordinates, setCoordinates] = useState<Coordinates>({
-    lat: 0,
-    lng: 0,
-  });
+  const [coordinates, setCoordinates] = useState<Coordinates | null>(null);
   const [bounds, setBounds] = useState<MapBounds | null>(null);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [type, setType] = useState<PlaceType>("restaurants");
   const [rating, setRating] = useState<number | "">("");
 
@@ -33,15 +30,19 @@ const App = () => {
     : places;
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      ({ coords: { latitude, longitude } }) => {
-        setCoordinates({ lat: latitude, lng: longitude });
-      }
-    );
+    let cancelled = false;
+
+    getApproximateLocation().then((location) => {
+      if (!cancelled) setCoordinates(location);
+    });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
-    if (!bounds?.sw || !bounds?.ne) {
+    if (!coordinates || !bounds?.sw || !bounds?.ne) {
       return undefined;
     }
 
@@ -63,7 +64,7 @@ const App = () => {
     return () => {
       cancelled = true;
     };
-  }, [type, bounds, coordinates.lat, coordinates.lng]);
+  }, [type, bounds, coordinates]);
 
   useEffect(() => {
     if (!bounds?.sw || !bounds?.ne) {
@@ -91,14 +92,16 @@ const App = () => {
         </Grid>
 
         <Grid size={{ xs: 12, md: 8 }}>
-          <Map
-            setCoordinates={setCoordinates}
-            setBounds={setBounds}
-            coordinates={coordinates}
-            places={displayedPlaces}
-            setChildClicked={setChildClicked}
-            weatherData={weatherData}
-          />
+          {coordinates ? (
+            <Map
+              setCoordinates={setCoordinates}
+              setBounds={setBounds}
+              coordinates={coordinates}
+              places={displayedPlaces}
+              setChildClicked={setChildClicked}
+              weatherData={weatherData}
+            />
+          ) : null}
         </Grid>
       </Grid>
     </>

@@ -48,8 +48,6 @@ const MapEvents = ({
 
   useEffect(() => {
     map.invalidateSize();
-    const center = map.getCenter();
-    if (center.lat === 0 && center.lng === 0) return;
     reportView(map, setCoordinates, setBounds);
   }, [map, setCoordinates, setBounds]);
 
@@ -61,13 +59,9 @@ const Recenter = ({ coordinates }: { coordinates: Coordinates }) => {
   const didCenter = useRef(false);
 
   useEffect(() => {
-    if (
-      !didCenter.current &&
-      (coordinates.lat !== 0 || coordinates.lng !== 0)
-    ) {
-      map.setView([coordinates.lat, coordinates.lng], 14, { animate: false });
-      didCenter.current = true;
-    }
+    if (didCenter.current) return;
+    map.setView([coordinates.lat, coordinates.lng], 14, { animate: false });
+    didCenter.current = true;
   }, [coordinates, map]);
 
   return null;
@@ -128,7 +122,7 @@ const Map = ({
   return (
     <div style={{ height: "85vh", width: "100%" }}>
       <MapContainer
-        center={[coordinates.lat || 0, coordinates.lng || 0]}
+        center={[coordinates.lat, coordinates.lng]}
         zoom={14}
         zoomControl
         style={{ height: "100%", width: "100%" }}
