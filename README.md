@@ -12,7 +12,7 @@
 
 ## ⚠️ Before you start
 
-1. Make sure **Git** and **Node.js 20.19+** are installed.
+1. Make sure **Git** and **Node.js** are installed.
 2. Create a `.env.local` file in the root folder.
 3. Contents of **.env.local**
 
@@ -28,25 +28,21 @@ RAPID_API_KEY="XXXXXXXXXXXXXXXXXXXXX"
 
 6. After enabling, paste your API key in `.env.local` as `RAPID_API_KEY`.
 
-This key is used only by **Netlify Functions** (`/api/places` and `/api/weather`). Do not prefix it with `VITE_` — that would expose it in the browser bundle.
-
-On Netlify, set `RAPID_API_KEY` in the site environment variables (Functions scope) and remove any old `REACT_APP_RAPID_API_KEY` value.
-
 **NOTE:** Make sure you don't share these keys publicaly.
 
 ## 📌 How to use this App?
 
 1. Clone this **repository** to your local computer.
 2. Open **terminal** in root directory.
-3. Type and Run `pnpm install` (or `npm install`).
-4. Once packages are installed, type and run `pnpm dev` or `pnpm start`.
+3. Type and Run `npm install` or `pnpm install`.
+4. Once packages are installed, type and run `npm run dev` or `pnpm dev`.
 5. Now app is fully configured and you can start using this app :+1:
 
 Useful scripts:
 
-- `pnpm dev` — Vite dev server (functions are emulated locally)
-- `pnpm lint` — ESLint
-- `pnpm build` — type-check and production build
+- `npm run dev` or `pnpm dev` — Vite dev server (functions are emulated locally)
+- `npm run lint` or `pnpm lint` — ESLint
+- `npm run build` or `pnpm build` — type-check and production build
 
 ### Need Help?
 
