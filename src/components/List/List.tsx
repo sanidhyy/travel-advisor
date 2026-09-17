@@ -7,10 +7,9 @@ import {
   MenuItem,
   FormControl,
   Select,
-} from "@material-ui/core";
+} from "@mui/material";
+import type { SelectChangeEvent } from "@mui/material/Select";
 import PlaceDetails from "../PlaceDetails/PlaceDetails";
-
-import useStyles from "./styles";
 import type { Place, PlaceType } from "../../types";
 
 type ListProps = {
@@ -32,24 +31,31 @@ const List = ({
   rating,
   setRating,
 }: ListProps) => {
-  const classes = useStyles();
-
   return (
-    <div className={classes.container}>
+    <div style={{ padding: 25 }}>
       <Typography variant="h4">
         Restaurants, Hotels & Attractions around you
       </Typography>
       {isLoading ? (
-        <div className={classes.loading}>
+        <div
+          style={{
+            height: 600,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <CircularProgress size="5rem" />
         </div>
       ) : (
         <>
-          <FormControl className={classes.formControl}>
+          <FormControl variant="standard" sx={{ m: 1, minWidth: 120, mb: "30px" }}>
             <InputLabel>Type</InputLabel>
             <Select
               value={type}
-              onChange={(e) => setType(e.target.value as PlaceType)}
+              onChange={(e: SelectChangeEvent<PlaceType>) =>
+                setType(e.target.value as PlaceType)
+              }
             >
               <MenuItem value="restaurants">Restaurants</MenuItem>
               <MenuItem value="hotels">Hotels</MenuItem>
@@ -57,11 +63,13 @@ const List = ({
             </Select>
           </FormControl>
 
-          <FormControl className={classes.formControl}>
+          <FormControl variant="standard" sx={{ m: 1, minWidth: 120, mb: "30px" }}>
             <InputLabel>Rating</InputLabel>
             <Select
               value={rating}
-              onChange={(e) => setRating(e.target.value as number | "")}
+              onChange={(e: SelectChangeEvent<number | "">) =>
+                setRating(e.target.value as number | "")
+              }
             >
               <MenuItem value={0}>All</MenuItem>
               <MenuItem value={3}>Above 3.0</MenuItem>
@@ -70,9 +78,9 @@ const List = ({
             </Select>
           </FormControl>
 
-          <Grid container spacing={3} className={classes.list}>
+          <Grid container spacing={3} sx={{ height: "75vh", overflow: "auto" }}>
             {places.map((place, i) => (
-              <Grid item key={place.name ?? i} xs={12}>
+              <Grid key={place.name ?? i} size={12}>
                 <PlaceDetails
                   place={place}
                   selected={Number(childClicked) === i}

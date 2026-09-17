@@ -8,12 +8,10 @@ import {
   CardContent,
   CardActions,
   Chip,
-} from "@material-ui/core";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
-import PhoneIcon from "@material-ui/icons/Phone";
-import Rating from "@material-ui/lab/Rating";
-
-import useStyles from "./styles";
+  Rating,
+} from "@mui/material";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import PhoneIcon from "@mui/icons-material/Phone";
 import type { Place } from "../../types";
 
 type PlaceDetailsProps = {
@@ -22,7 +20,6 @@ type PlaceDetailsProps = {
 };
 
 const PlaceDetails = ({ place, selected }: PlaceDetailsProps) => {
-  const classes = useStyles();
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,7 +30,7 @@ const PlaceDetails = ({ place, selected }: PlaceDetailsProps) => {
   return (
     <Card ref={cardRef} elevation={6}>
       <CardMedia
-        style={{ height: 350 }}
+        sx={{ height: 350 }}
         image={
           place.photo?.images?.large?.url ??
           "https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg"
@@ -46,21 +43,21 @@ const PlaceDetails = ({ place, selected }: PlaceDetailsProps) => {
           {place.name || "N/A"}
         </Typography>
 
-        <Box display="flex" justifyContent="space-between">
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Rating value={Number(place.rating)} readOnly />
           <Typography gutterBottom variant="subtitle1">
             out of {place.num_reviews} reviews
           </Typography>
         </Box>
 
-        <Box display="flex" justifyContent="space-between">
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="subtitle1">Price</Typography>
           <Typography gutterBottom variant="subtitle1">
             {place.price_level || "N/A"}
           </Typography>
         </Box>
 
-        <Box display="flex" justifyContent="space-between">
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="subtitle1">Ranking</Typography>
           <Typography gutterBottom variant="subtitle1">
             {place.ranking || "N/A"}
@@ -69,27 +66,36 @@ const PlaceDetails = ({ place, selected }: PlaceDetailsProps) => {
 
         {place.awards?.map((award) => (
           <Box
-            display="flex"
-            justifyContent="space-between"
+            sx={{ display: "flex", justifyContent: "space-between" }}
             key={award.display_name}
           >
             <img src={award.images.small} alt={award.display_name} />
-            <Typography variant="subtitle2" color="textSecondary">
+            <Typography variant="subtitle2" color="text.secondary">
               {award.display_name}
             </Typography>
           </Box>
         ))}
 
         {place.cuisine?.map(({ name }) => (
-          <Chip key={name} size="small" label={name} className={classes.chip} />
+          <Chip
+            key={name}
+            size="small"
+            label={name}
+            sx={{ margin: "5px 5px 5px 0" }}
+          />
         ))}
 
         {place.address && (
           <Typography
             gutterBottom
             variant="subtitle2"
-            color="textSecondary"
-            className={classes.subtitle}
+            color="text.secondary"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              mt: "10px",
+            }}
           >
             <LocationOnIcon /> {place.address}
           </Typography>
@@ -99,8 +105,12 @@ const PlaceDetails = ({ place, selected }: PlaceDetailsProps) => {
           <Typography
             gutterBottom
             variant="subtitle2"
-            color="textSecondary"
-            className={classes.spacing}
+            color="text.secondary"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
           >
             <PhoneIcon /> {place.phone}
           </Typography>

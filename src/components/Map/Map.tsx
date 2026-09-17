@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
 import type { Map as LeafletMap } from "leaflet";
-import { Paper, Typography, useMediaQuery } from "@material-ui/core";
-import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
-import Rating from "@material-ui/lab/Rating";
+import { Paper, Typography, useMediaQuery, Rating } from "@mui/material";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 
-import useStyles from "./styles";
 import "leaflet/dist/leaflet.css";
 import type {
   Coordinates,
@@ -78,13 +76,11 @@ const Recenter = ({ coordinates }: { coordinates: Coordinates }) => {
 const OverlayMarker = ({
   lat,
   lng,
-  className,
   onClick,
   children,
 }: {
   lat: number;
   lng: number;
-  className?: string;
   onClick?: () => void;
   children: ReactNode;
 }) => {
@@ -104,9 +100,15 @@ const OverlayMarker = ({
 
   return (
     <div
-      className={className}
-      style={{ left: pos.x, top: pos.y }}
       onClick={onClick}
+      style={{
+        position: "absolute",
+        transform: "translate(-50%, -50%)",
+        zIndex: 1,
+        pointerEvents: "auto",
+        left: pos.x,
+        top: pos.y,
+      }}
     >
       {children}
     </div>
@@ -121,11 +123,10 @@ const Map = ({
   setChildClicked,
   weatherData,
 }: MapProps) => {
-  const classes = useStyles();
   const isDesktop = useMediaQuery("(min-width: 600px)");
 
   return (
-    <div className={classes.mapContainer}>
+    <div style={{ height: "85vh", width: "100%" }}>
       <MapContainer
         center={[coordinates.lat || 0, coordinates.lng || 0]}
         zoom={14}
@@ -139,7 +140,17 @@ const Map = ({
         <Recenter coordinates={coordinates} />
         <MapEvents setCoordinates={setCoordinates} setBounds={setBounds} />
 
-        <div className={classes.overlayPane}>
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: 600,
+            pointerEvents: "none",
+          }}
+        >
           {places.map((place, i) => {
             const lat = Number(place.latitude);
             const lng = Number(place.longitude);
@@ -150,13 +161,21 @@ const Map = ({
                 key={`${place.name ?? "place"}-${i}`}
                 lat={lat}
                 lng={lng}
-                className={classes.markerContainer}
                 onClick={() => setChildClicked(i)}
               >
                 {!isDesktop ? (
                   <LocationOnOutlinedIcon color="primary" fontSize="large" />
                 ) : (
-                  <Paper elevation={3} className={classes.paper}>
+                  <Paper
+                    elevation={3}
+                    sx={{
+                      p: "10px",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      width: "100px",
+                    }}
+                  >
                     <Typography variant="subtitle2" gutterBottom>
                       {place.name}
                     </Typography>
@@ -166,7 +185,7 @@ const Map = ({
                         "https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg"
                       }
                       alt={place.name}
-                      className={classes.pointer}
+                      style={{ cursor: "pointer" }}
                     />
                     <Rating
                       size="small"
@@ -183,7 +202,6 @@ const Map = ({
             <OverlayMarker
               lat={weatherData.location.lat}
               lng={weatherData.location.lon}
-              className={classes.markerContainer}
             >
               <img
                 height={100}
