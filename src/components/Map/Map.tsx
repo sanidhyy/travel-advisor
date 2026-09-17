@@ -1,13 +1,33 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
+import type { Map as LeafletMap } from "leaflet";
 import { Paper, Typography, useMediaQuery } from "@material-ui/core";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import Rating from "@material-ui/lab/Rating";
 
 import useStyles from "./styles";
 import "leaflet/dist/leaflet.css";
+import type {
+  Coordinates,
+  MapBounds,
+  Place,
+  WeatherData,
+} from "../../types";
 
-const reportView = (map, setCoordinates, setBounds) => {
+type MapProps = {
+  setCoordinates: (coordinates: Coordinates) => void;
+  setBounds: (bounds: MapBounds) => void;
+  coordinates: Coordinates;
+  places: Place[];
+  setChildClicked: (index: number) => void;
+  weatherData?: WeatherData;
+};
+
+const reportView = (
+  map: LeafletMap,
+  setCoordinates: (coordinates: Coordinates) => void,
+  setBounds: (bounds: MapBounds) => void
+) => {
   const center = map.getCenter();
   const bounds = map.getBounds();
   const ne = bounds.getNorthEast();
@@ -20,7 +40,10 @@ const reportView = (map, setCoordinates, setBounds) => {
   });
 };
 
-const MapEvents = ({ setCoordinates, setBounds }) => {
+const MapEvents = ({
+  setCoordinates,
+  setBounds,
+}: Pick<MapProps, "setCoordinates" | "setBounds">) => {
   const map = useMapEvents({
     moveend: () => reportView(map, setCoordinates, setBounds),
   });
@@ -35,7 +58,7 @@ const MapEvents = ({ setCoordinates, setBounds }) => {
   return null;
 };
 
-const Recenter = ({ coordinates }) => {
+const Recenter = ({ coordinates }: { coordinates: Coordinates }) => {
   const map = useMap();
   const didCenter = useRef(false);
 
@@ -52,7 +75,19 @@ const Recenter = ({ coordinates }) => {
   return null;
 };
 
-const OverlayMarker = ({ lat, lng, className, onClick, children }) => {
+const OverlayMarker = ({
+  lat,
+  lng,
+  className,
+  onClick,
+  children,
+}: {
+  lat: number;
+  lng: number;
+  className?: string;
+  onClick?: () => void;
+  children: ReactNode;
+}) => {
   const map = useMap();
   const [pos, setPos] = useState(() =>
     map.latLngToContainerPoint([lat, lng])
@@ -85,7 +120,7 @@ const Map = ({
   places,
   setChildClicked,
   weatherData,
-}) => {
+}: MapProps) => {
   const classes = useStyles();
   const isDesktop = useMediaQuery("(min-width: 600px)");
 
@@ -105,14 +140,14 @@ const Map = ({
         <MapEvents setCoordinates={setCoordinates} setBounds={setBounds} />
 
         <div className={classes.overlayPane}>
-          {places?.map((place, i) => {
+          {places.map((place, i) => {
             const lat = Number(place.latitude);
             const lng = Number(place.longitude);
             if (Number.isNaN(lat) || Number.isNaN(lng)) return null;
 
             return (
               <OverlayMarker
-                key={i}
+                key={`${place.name ?? "place"}-${i}`}
                 lat={lat}
                 lng={lng}
                 className={classes.markerContainer}
@@ -122,18 +157,13 @@ const Map = ({
                   <LocationOnOutlinedIcon color="primary" fontSize="large" />
                 ) : (
                   <Paper elevation={3} className={classes.paper}>
-                    <Typography
-                      className={classes.typography}
-                      variant="subtitle2"
-                      gutterBottom
-                    >
+                    <Typography variant="subtitle2" gutterBottom>
                       {place.name}
                     </Typography>
                     <img
                       src={
-                        place.photo
-                          ? place.photo.images.large.url
-                          : "https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg"
+                        place.photo?.images?.large?.url ??
+                        "https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg"
                       }
                       alt={place.name}
                       className={classes.pointer}
@@ -149,7 +179,7 @@ const Map = ({
             );
           })}
 
-          {weatherData?.location && weatherData?.current?.condition?.icon && (
+          {weatherData?.location && weatherData.current?.condition?.icon && (
             <OverlayMarker
               lat={weatherData.location.lat}
               lng={weatherData.location.lon}

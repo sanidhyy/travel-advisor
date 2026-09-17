@@ -1,22 +1,32 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { CssBaseline, Grid } from "@material-ui/core";
 
 import Header from "./components/Header/Header";
 import List from "./components/List/List";
 import Map from "./components/Map/Map";
 import { getPlacesData, getWeatherData } from "./api";
+import type {
+  Coordinates,
+  MapBounds,
+  Place,
+  PlaceType,
+  WeatherData,
+} from "./types";
 
 const App = () => {
-  const [places, setPlaces] = useState([]);
-  const [weatherData, setWeatherData] = useState([]);
-  const [childClicked, setChildClicked] = useState(null);
+  const [places, setPlaces] = useState<Place[]>([]);
+  const [weatherData, setWeatherData] = useState<WeatherData | undefined>();
+  const [childClicked, setChildClicked] = useState<number | null>(null);
 
-  const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 });
-  const [bounds, setBounds] = useState({ ne: 0, sw: 0 });
+  const [coordinates, setCoordinates] = useState<Coordinates>({
+    lat: 0,
+    lng: 0,
+  });
+  const [bounds, setBounds] = useState<MapBounds | null>(null);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [type, setType] = useState("restaurants");
-  const [rating, setRating] = useState("");
+  const [type, setType] = useState<PlaceType>("restaurants");
+  const [rating, setRating] = useState<number | "">("");
 
   const displayedPlaces = rating
     ? places.filter((place) => Number(place.rating) > Number(rating))
@@ -31,7 +41,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (!bounds.sw || !bounds.ne) {
+    if (!bounds?.sw || !bounds?.ne) {
       return undefined;
     }
 
@@ -43,7 +53,10 @@ const App = () => {
 
     getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
       if (cancelled) return;
-      setPlaces(data?.filter((place) => place.name && place.num_reviews > 0));
+      setPlaces(
+        data?.filter((place) => place.name && Number(place.num_reviews) > 0) ??
+          []
+      );
       setIsLoading(false);
     });
 
@@ -53,7 +66,7 @@ const App = () => {
   }, [type, bounds, coordinates.lat, coordinates.lng]);
 
   useEffect(() => {
-    if (!bounds.sw || !bounds.ne) {
+    if (!bounds?.sw || !bounds?.ne) {
       return undefined;
     }
 

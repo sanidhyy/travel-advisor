@@ -1,4 +1,4 @@
-import React from "react";
+import type { Dispatch, SetStateAction } from "react";
 import {
   CircularProgress,
   Grid,
@@ -11,6 +11,17 @@ import {
 import PlaceDetails from "../PlaceDetails/PlaceDetails";
 
 import useStyles from "./styles";
+import type { Place, PlaceType } from "../../types";
+
+type ListProps = {
+  places: Place[];
+  childClicked: number | null;
+  isLoading: boolean;
+  type: PlaceType;
+  setType: Dispatch<SetStateAction<PlaceType>>;
+  rating: number | "";
+  setRating: Dispatch<SetStateAction<number | "">>;
+};
 
 const List = ({
   places,
@@ -20,7 +31,7 @@ const List = ({
   setType,
   rating,
   setRating,
-}) => {
+}: ListProps) => {
   const classes = useStyles();
 
   return (
@@ -36,7 +47,10 @@ const List = ({
         <>
           <FormControl className={classes.formControl}>
             <InputLabel>Type</InputLabel>
-            <Select value={type} onChange={(e) => setType(e.target.value)}>
+            <Select
+              value={type}
+              onChange={(e) => setType(e.target.value as PlaceType)}
+            >
               <MenuItem value="restaurants">Restaurants</MenuItem>
               <MenuItem value="hotels">Hotels</MenuItem>
               <MenuItem value="attractions">Attractions</MenuItem>
@@ -45,7 +59,10 @@ const List = ({
 
           <FormControl className={classes.formControl}>
             <InputLabel>Rating</InputLabel>
-            <Select value={rating} onChange={(e) => setRating(e.target.value)}>
+            <Select
+              value={rating}
+              onChange={(e) => setRating(e.target.value as number | "")}
+            >
               <MenuItem value={0}>All</MenuItem>
               <MenuItem value={3}>Above 3.0</MenuItem>
               <MenuItem value={4}>Above 4.0</MenuItem>
@@ -54,7 +71,7 @@ const List = ({
           </FormControl>
 
           <Grid container spacing={3} className={classes.list}>
-            {places?.map((place, i) => (
+            {places.map((place, i) => (
               <Grid item key={place.name ?? i} xs={12}>
                 <PlaceDetails
                   place={place}
