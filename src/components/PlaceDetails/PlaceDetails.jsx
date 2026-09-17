@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Box,
   Typography,
@@ -13,19 +13,19 @@ import LocationOnIcon from "@material-ui/icons/LocationOn";
 import PhoneIcon from "@material-ui/icons/Phone";
 import Rating from "@material-ui/lab/Rating";
 
-// Styles
 import useStyles from "./styles";
 
-// Place Details
-const PlaceDetails = ({ place, selected, refProp }) => {
-  // get current selected place from map
-  if (selected)
-    refProp?.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-
+const PlaceDetails = ({ place, selected }) => {
   const classes = useStyles();
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    if (!selected) return;
+    cardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [selected]);
+
   return (
-    <Card elevation={6}>
-      {/* Place Image */}
+    <Card ref={cardRef} elevation={6}>
       <CardMedia
         style={{ height: 350 }}
         image={
@@ -37,12 +37,10 @@ const PlaceDetails = ({ place, selected, refProp }) => {
       />
 
       <CardContent>
-        {/* Place Name */}
         <Typography gutterBottom variant="h5">
           {place.name || "N/A"}
         </Typography>
 
-        {/* Place Rating */}
         <Box display="flex" justifyContent="space-between">
           <Rating value={Number(place.rating)} readOnly />
           <Typography gutterBottom variant="subtitle1">
@@ -50,7 +48,6 @@ const PlaceDetails = ({ place, selected, refProp }) => {
           </Typography>
         </Box>
 
-        {/* Place Price Level */}
         <Box display="flex" justifyContent="space-between">
           <Typography variant="subtitle1">Price</Typography>
           <Typography gutterBottom variant="subtitle1">
@@ -58,7 +55,6 @@ const PlaceDetails = ({ place, selected, refProp }) => {
           </Typography>
         </Box>
 
-        {/* Place Ranking */}
         <Box display="flex" justifyContent="space-between">
           <Typography variant="subtitle1">Ranking</Typography>
           <Typography gutterBottom variant="subtitle1">
@@ -66,22 +62,23 @@ const PlaceDetails = ({ place, selected, refProp }) => {
           </Typography>
         </Box>
 
-        {/* Place Awards */}
         {place?.awards?.map((award) => (
-          <Box display="flex" justifyContent="space-between">
-            <img my={1} src={award.images.small} alt={award.display_name} />
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            key={award.display_name}
+          >
+            <img src={award.images.small} alt={award.display_name} />
             <Typography variant="subtitle2" color="textSecondary">
               {award.display_name}
             </Typography>
           </Box>
         ))}
 
-        {/* Place cuisine */}
         {place?.cuisine?.map(({ name }) => (
           <Chip key={name} size="small" label={name} className={classes.chip} />
         ))}
 
-        {/* Place Address */}
         {place?.address && (
           <Typography
             gutterBottom
@@ -93,7 +90,6 @@ const PlaceDetails = ({ place, selected, refProp }) => {
           </Typography>
         )}
 
-        {/* Place Phone No */}
         {place?.phone && (
           <Typography
             gutterBottom
@@ -105,7 +101,6 @@ const PlaceDetails = ({ place, selected, refProp }) => {
           </Typography>
         )}
 
-        {/* Place trip advisor website */}
         <CardActions>
           {place.web_url ? (
             <Button
@@ -117,7 +112,6 @@ const PlaceDetails = ({ place, selected, refProp }) => {
             </Button>
           ) : null}
 
-          {/* Place official website */}
           {place.website ? (
             <Button
               size="small"

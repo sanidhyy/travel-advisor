@@ -6,11 +6,9 @@ import List from "./components/List/List";
 import Map from "./components/Map/Map";
 import { getPlacesData, getWeatherData } from "./api";
 
-// App
 const App = () => {
   const [places, setPlaces] = useState([]);
   const [weatherData, setWeatherData] = useState([]);
-  const [filteredPlaces, setFilteredPlaces] = useState([]);
   const [childClicked, setChildClicked] = useState(null);
 
   const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 });
@@ -20,7 +18,10 @@ const App = () => {
   const [type, setType] = useState("restaurants");
   const [rating, setRating] = useState("");
 
-  // get current location coords
+  const displayedPlaces = rating
+    ? places.filter((place) => Number(place.rating) > Number(rating))
+    : places;
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       ({ coords: { latitude, longitude } }) => {
@@ -29,29 +30,35 @@ const App = () => {
     );
   }, []);
 
-  // get filtered places rating wise
   useEffect(() => {
-    const filteredPlaces = places.filter((place) => place.rating > rating);
-    setFilteredPlaces(filteredPlaces);
-    // eslint-disable-next-line
-  }, [rating]);
-
-  // get places and weather data
-  useEffect(() => {
-    if (bounds.sw && bounds.ne) {
-      setIsLoading(true);
-
-      getWeatherData(coordinates.lat, coordinates.lng).then((data) =>
-        setWeatherData(data)
-      );
-
-      getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
-        setPlaces(data?.filter((place) => place.name && place.num_reviews > 0));
-        setFilteredPlaces([]);
-        setIsLoading(false);
-      });
+    if (!bounds.sw || !bounds.ne) {
+      return undefined;
     }
-    // eslint-disable-next-line
+
+    let cancelled = false;
+
+    getWeatherData(coordinates.lat, coordinates.lng).then((data) => {
+      if (!cancelled) setWeatherData(data);
+    });
+
+    getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
+      if (cancelled) return;
+      setPlaces(data?.filter((place) => place.name && place.num_reviews > 0));
+      setIsLoading(false);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [type, bounds, coordinates.lat, coordinates.lng]);
+
+  useEffect(() => {
+    if (!bounds.sw || !bounds.ne) {
+      return undefined;
+    }
+
+    const frame = requestAnimationFrame(() => setIsLoading(true));
+    return () => cancelAnimationFrame(frame);
   }, [type, bounds]);
 
   return (
@@ -59,10 +66,9 @@ const App = () => {
       <CssBaseline />
       <Header />
       <Grid container spacing={3} style={{ width: "100%" }}>
-        {/* Places Info */}
         <Grid item xs={12} md={4}>
           <List
-            places={filteredPlaces.length ? filteredPlaces : places}
+            places={displayedPlaces}
             childClicked={childClicked}
             isLoading={isLoading}
             type={type}
@@ -72,13 +78,12 @@ const App = () => {
           />
         </Grid>
 
-        {/* Map */}
         <Grid item xs={12} md={8}>
           <Map
             setCoordinates={setCoordinates}
             setBounds={setBounds}
             coordinates={coordinates}
-            places={filteredPlaces.length ? filteredPlaces : places}
+            places={displayedPlaces}
             setChildClicked={setChildClicked}
             weatherData={weatherData}
           />
