@@ -37,7 +37,7 @@ REACT_APP_RAPID_API_KEY="XXXXXXXXXXXXXXXXXXXXX"
 
 8. Now, to setup Travel Advisor and Weather API, go to [Rapid API Website](https://rapidapi.com/) and create an account.
 
-9. Enable these two APIs for travel and weather data: [API 1: Travel Advisor](https://rapidapi.com/apidojo/api/travel-advisor/) and [API 2: Open Weather Map](https://rapidapi.com/community/api/open-weather-map/).
+9. Enable these two APIs for travel and weather data: [API 1: Travel Advisor](https://rapidapi.com/apidojo/api/travel-advisor/) and [API 2: WeatherAPI.com](https://rapidapi.com/weatherapi/api/weatherapi-com/).
 
 ![Copy API Key](https://user-images.githubusercontent.com/71302066/174563987-a29b9be5-390b-4dbd-9d3f-f7a19e42172b.png)
 

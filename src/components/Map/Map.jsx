@@ -81,15 +81,18 @@ const Map = ({
         ))}
 
         {/* Render Weather Data */}
-        {weatherData?.list?.map((data, i) => (
-          <div key={i} lat={data.coord.lat} lng={data.coord.lon}>
+        {weatherData?.location && weatherData?.current?.condition?.icon && (
+          <div
+            lat={weatherData.location.lat}
+            lng={weatherData.location.lon}
+          >
             <img
               height={100}
-              src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`}
-              alt={`Weather ${i}`}
+              src={`https:${weatherData.current.condition.icon}`}
+              alt={weatherData.current.condition.text}
             />
           </div>
-        ))}
+        )}
       </GoogleMapReact>
     </div>
   );
