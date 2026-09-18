@@ -23,7 +23,7 @@ loadLocalEnvFile(".env.local");
 loadLocalEnvFile(".env");
 
 export const getRapidApiKey = (): string | undefined => {
-  const key = process.env.RAPID_API_KEY ?? process.env.REACT_APP_RAPID_API_KEY;
+  const key = process.env.RAPID_API_KEY;
   return key ? key : undefined;
 };
 
